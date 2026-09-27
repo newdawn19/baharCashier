@@ -16,3 +16,6 @@ yarn-error.log*
 *.sln
 server/client/baharCashier Setup 0.0.1.exe
 build/builder-effective-config.yaml
+
+# AI Framework local control plane
+/agent_bootstrap/
