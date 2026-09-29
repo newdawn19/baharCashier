@@ -144,7 +144,14 @@ function startElectron() {
     args = args.concat(process.argv.slice(2))
   }
 
-  electronProcess = spawn(electron, args)
+  // ELECTRON_RUN_AS_NODE=1 会让 electron 以纯 Node 模式启动：
+  // 此时 require('electron') 返回的是可执行文件路径字符串（不是 API 对象），
+  // 主进程一执行 electron.app.getAppPath() 就崩。某些 IDE/终端环境会注入该变量，
+  // 这里显式剔除，保证 Electron 以正常 GUI 主进程启动。
+  const childEnv = Object.assign({}, process.env)
+  delete childEnv.ELECTRON_RUN_AS_NODE
+
+  electronProcess = spawn(electron, args, { env: childEnv })
 
   electronProcess.stdout.on('data', data => {
     electronLog(removeJunk(data), 'blue')

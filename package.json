@@ -6,7 +6,12 @@
   "license": "MIT",
   "main": "./dist/electron/main.js",
   "scripts": {
-    "dev": "cross-env TERGET_ENV=development node .electron-vue/dev-runner.js",
+    "dev": "cross-env TERGET_ENV=development node .electron-vue/dev-runner.js -m shop",
+    "dev:shop": "cross-env TERGET_ENV=development node .electron-vue/dev-runner.js -m shop",
+    "dev:car": "cross-env TERGET_ENV=development node .electron-vue/dev-runner.js -m car",
+    "dev:food": "cross-env TERGET_ENV=development node .electron-vue/dev-runner.js -m food",
+    "dev:health": "cross-env TERGET_ENV=development node .electron-vue/dev-runner.js -m health",
+    "dev:origin": "cross-env TERGET_ENV=development node .electron-vue/dev-runner.js",
     "build": "cross-env BUILD_TARGET=clean node .electron-vue/build.js  && electron-builder",
     "build:win32": "cross-env BUILD_TARGET=clean node .electron-vue/build.js  && electron-builder --win  --ia32",
     "build:win64": "cross-env BUILD_TARGET=clean node .electron-vue/build.js  && electron-builder --win  --x64",

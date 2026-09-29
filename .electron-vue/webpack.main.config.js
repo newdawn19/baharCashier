@@ -21,6 +21,11 @@ let mainConfig = {
     main: path.join(__dirname, '../src/main/index.js')
   },
   externals: [
+    // electron 在 devDependencies 里，不在 dependencies，
+    // 若不显式排除会被打包进 main.js：运行时 require('electron') 会解析成
+    // node_modules/electron/index.js（返回可执行文件路径字符串），
+    // 导致 electron.app 为 undefined —— 主进程一启动就崩。
+    'electron',
     ...Object.keys(dependencies || {})
   ],
   module: {
