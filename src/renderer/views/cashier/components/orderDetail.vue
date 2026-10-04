@@ -204,7 +204,7 @@ export default {
       default:()=>false
     },
     orderId:{
-      type:[String],
+      type:[Number,String],
       default:()=> ''
     }
   },

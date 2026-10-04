@@ -16,7 +16,7 @@
                   <div class="txt">正在支付中...</div>
                 </div>
                 <div class="amount-info">
-                  <span>￥<span class="amount">{{ payResult.payAmount.toFixed(2) }}</span></span>
+                  <span>￥<span class="amount">{{ Number(payResult.payAmount || 0).toFixed(2) }}</span></span>
                 </div>
               </div>
             </el-col>

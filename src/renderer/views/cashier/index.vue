@@ -90,7 +90,7 @@
 
             <div class="total-box">
               <span>合计：</span>
-              <span class="total-price">￥{{ totalPrice }}</span>
+              <span class="total-price">￥{{ totalPrice.toFixed(2) }}</span>
               <span class="total-count">共 {{ totalCount }} 件</span>
             </div>
 
@@ -209,7 +209,7 @@ export default {
       cateId: '',
       keyword: '',
       cart: [],
-      totalPrice: '0.00',
+      totalPrice: 0,
       remark: '',
       mobile: '',
       memberInfo: {},
@@ -301,7 +301,10 @@ export default {
     recalcTotal() {
       const t = this.cart.reduce(
         (sum, i) => sum + Number(i.price) * Number(i.num || 0), 0)
-      this.totalPrice = t.toFixed(2)
+      // 保留为 Number：金额既要展示(￥xx.xx)也要做计算，
+      // 存字符串会让子组件 payAmount 的 Number 类型校验失败。
+      // 展示时由模板统一 toFixed(2)。
+      this.totalPrice = Number(t.toFixed(2))
     },
     doSearchMember() {
       if (!this.mobile) return

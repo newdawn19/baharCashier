@@ -143,7 +143,7 @@ export default {
       },
       totalPrice: {
         type:[Number],
-        default:()=>'0'
+        default:()=>0
       },
       remarks: {
         type:[String],
@@ -286,6 +286,9 @@ export default {
             if (this.newTotalPrice < 0) {
                 this.newTotalPrice = 0;
             }
+            // 统一为 Number，避免下游(scanPayCodeDialog.payAmount 等)
+            // 收到字符串触发 prop 类型校验警告
+            this.newTotalPrice = Number(Number(this.newTotalPrice).toFixed(2));
         },
         // 关联会员
         bindToMember() {
