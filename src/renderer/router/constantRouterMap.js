@@ -27,6 +27,10 @@ export default [
   {
     path: '/cashier',
     component: Layout,
+    // 父路由必须有 redirect，否则直接访问 /cashier 只会命中父级（component = Layout），
+    // 而 Layout 内部的 <router-view> 没有可渲染的子组件 → 内容区空白（<!---->）。
+    // 重定向到真正的收银页面子路由 /cashier/index。
+    redirect: '/cashier/index',
     meta: { roles: ['admin', 'common', 'user'] },
     children: [
       {

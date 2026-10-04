@@ -19,10 +19,6 @@ export const constantRouterMap = [{
   component: () => import('@/views/login'),
   hidden: true
 }, {
-  path: '/cashier',
-  component: () => import('@/views/cashier'),
-  hidden: true
-} , {
   path: '/setting',
   component: () => import('@/views/setting'),
   hidden: true

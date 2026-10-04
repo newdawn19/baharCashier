@@ -57,11 +57,19 @@ export const useUserStore = defineStore({
             return new Promise((resolve, reject) => {
                 getInfo().then(res => {
                     const user = res.data.accountInfo;
+                    // 后端 getInfo 当前返回 roles: []（空数组）。
+                    // 若直接用空数组覆盖登录时写入的 ["admin"]，会导致后续
+                    // GenerateRoutes([]) 把 asyncRoutes 全部过滤掉（routers 恒为空），
+                    // 守卫反复调用 GetUserInfo 形成死循环。因此这里做兜底：
+                    // 后端未返回有效角色时，回退为已持有的角色；仍为空则回退 ['admin']。
+                    const backendRoles = res.data.roles;
+                    const fallbackRoles = (this.roles && this.roles.length) ? this.roles : ['admin'];
+                    const finalRoles = (backendRoles && backendRoles.length) ? backendRoles : fallbackRoles;
                     localStorage.setItem("name", user.accountName);
                     localStorage.setItem("permissions", JSON.stringify(res.data.permissions));
-                    localStorage.setItem("roles", JSON.stringify(res.data.roles));
+                    localStorage.setItem("roles", JSON.stringify(finalRoles));
                     this.name = user.accountName;
-                    this.roles = res.data.roles;
+                    this.roles = finalRoles;
                     resolve(this.roles);
                 }).catch(error => {
                     reject(error)

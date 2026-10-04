@@ -79,7 +79,7 @@ export default {
     getCode() {
       const app = this;
       getCodeImg().then(res => {
-          app.codeUrl = res.data.captcha;
+          app.codeUrl = res.data.code;
           app.loginForm.uuid = res.data.uuid;
       })
     },
