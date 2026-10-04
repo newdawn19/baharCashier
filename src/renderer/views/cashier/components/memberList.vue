@@ -74,7 +74,7 @@
       <el-table-column label="会员ID" prop="id" width="80"/>
       <el-table-column label="头像" align="center" width="80">
         <template slot-scope="scope">
-            <img v-if="scope.row.avatar" class="list-avatar" :src="scope.row.avatar">
+            <img v-if="scope.row.avatar" class="list-avatar" :src="avatarUrl(scope.row.avatar)">
             <img v-else class="list-avatar" src="@/assets/images/avatar.png">
         </template>
       </el-table-column>
@@ -306,6 +306,7 @@ import { getMemberList, updateMemberStatus, getMemberInfo, saveMember, deleteMem
 import balanceRecharge from "./balanceRecharge";
 import pointRecharge from "./pointRecharge";
 import { Message } from "element-ui";
+import { resolveFileUrl } from "@/utils/bahar";
 export default {
   name: "MemberIndex",
   components: { balanceRecharge, pointRecharge },
@@ -366,6 +367,12 @@ export default {
     this.getList();
   },
   methods: {
+    // 会员头像：后端返回的是相对路径(/static/uploadFiles/avatar/**)，
+    // 直接绑定 src 会按页面 origin(dev-server 8088) 解析 → 图片 404，
+    // 统一拼上后端静态资源根。
+    avatarUrl(path) {
+      return resolveFileUrl(path)
+    },
     // 查询列表
     getList() {
       this.loading = true;

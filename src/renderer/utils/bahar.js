@@ -204,3 +204,28 @@ export async function blobValidate(data) {
     return true;
   }
 }
+
+/**
+ * 解析后端返回的相对文件地址为可访问的完整 URL。
+ *
+ * 背景：后端接口返回的 avatar / logo 等字段是相对路径，例如
+ *   "/static/uploadFiles/avatar/106.jpg"
+ * 若直接绑定到 <img :src>，浏览器会按「当前页面 origin」解析：
+ *   开发环境页面在 http://localhost:8088（webpack dev-server），
+ *   而静态文件其实由后端 http://127.0.0.1:8081 提供，
+ *   于是请求变成 http://localhost:8088/static/... → 404/502，图片全挂。
+ *
+ * @param {string} path 后端返回的图片/文件地址（可能是相对路径或完整 URL）
+ * @param {string} [imagePath] 后端在 init 等接口中下发的静态资源根地址；缺省时回退到 API_HOST
+ * @returns {string} 可直接用于 src 的完整 URL
+ */
+export function resolveFileUrl(path, imagePath) {
+  if (!path) return ''
+  if (/^(https?:)?\/\//.test(path)) return path
+  let base = imagePath
+  if (!base) {
+    base = (process.env.userConfig && process.env.userConfig.API_HOST) || ''
+  }
+  if (!base) return path
+  return base.replace(/\/+$/, '') + (path.charAt(0) === '/' ? path : '/' + path)
+}

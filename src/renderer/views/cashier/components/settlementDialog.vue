@@ -85,7 +85,7 @@
                 <div class="content">
                   <div class="member-info" v-if="memberInfo">
                       <div class="base">
-                         <img class="avatar" v-if="memberInfo.avatar" :src="memberInfo.avatar"/>
+                         <img class="avatar" v-if="memberInfo.avatar" :src="avatarUrl(memberInfo.avatar)"/>
                          <img class="avatar" v-if="!memberInfo.avatar" src="@/assets/images/avatar.png"/>
                          <span class="name">{{ memberInfo.name }}</span>
                         <div class="gender">
@@ -118,6 +118,7 @@
     </el-dialog>
 </template>
 <script>
+import { resolveFileUrl } from '@/utils/bahar'
 export default {
     props: {
       showDialog: {
@@ -203,6 +204,10 @@ export default {
       }
     },
     methods: {
+        // 会员头像：后端返回相对路径，需拼后端静态资源根，否则会按 dev-server origin 解析导致 404
+        avatarUrl(path) {
+          return resolveFileUrl(path)
+        },
         // 选择支付方式
         selectPayType(type) {
           const app = this;

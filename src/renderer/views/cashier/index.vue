@@ -38,7 +38,7 @@
                 @click="addToCart(g)"
               >
                 <div class="goods-img">
-                  <img v-if="g.image" :src="imgUrl(g.image)" :alt="g.name">
+                  <img v-if="imgUrl(g.logo || g.image)" :src="imgUrl(g.logo || g.image)" :alt="g.name">
                   <span v-else class="no-img">{{ g.name }}</span>
                 </div>
                 <div class="goods-name">{{ g.name }}</div>
@@ -177,6 +177,7 @@
 
 <script>
 import { getInfo } from '@/api/login'
+import { resolveFileUrl } from '@/utils/bahar'
 import {
   init, searchGoods, getMemberInfo, submitSettlement,
   doHangUp, getHangUpList
@@ -256,8 +257,9 @@ export default {
       }).catch(() => {})
     },
     imgUrl(img) {
-      if (!img) return ''
-      return /^https?:/.test(img) ? img : this.imagePath + img
+      // 统一走后端静态资源根(imagePath)，缺省回退 API_HOST。
+      // 否则相对路径会被解析到 dev-server(8088)，导致 /static/uploadFiles/** 404。
+      return resolveFileUrl(img, this.imagePath)
     },
     onCateChange() {
       this.doSearchGoods()
