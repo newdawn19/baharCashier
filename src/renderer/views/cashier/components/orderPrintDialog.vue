@@ -1,22 +1,22 @@
 <template>
     <el-dialog class="common-dialog" title="订单打印预览" :visible="showDialog" width="380px" @close="cancel" append-to-body destroy-on-close>
-        <div v-if="orderInfo.id" class="print-area" id="printArea">
+        <div v-if="orderInfo && orderInfo.id" class="print-area" id="printArea">
             <div class="base-info">
                 <div class="name" v-if="storeInfo">{{ storeInfo.name }}</div>
                 <div class="no">NO：{{ orderInfo.orderSn }}</div>
             </div>
             <div>****************************************</div>
-            <div class="goods-list" v-if="orderInfo.goods.length > 0">
+            <div class="goods-list" v-if="orderInfo.goods && orderInfo.goods.length > 0">
               <div class="goods-item" v-for="(goodsInfo, index) in orderInfo.goods">
                 <span class="item">{{ index+1 }}.{{ goodsInfo.name }}</span>
                 <span class="item">x{{ goodsInfo.num }}</span>
                 <span class="item">￥{{ goodsInfo.price }}</span>
               </div>
             </div>
-            <div v-if="orderInfo.goods.length > 0">****************************************</div>
+            <div v-if="orderInfo.goods && orderInfo.goods.length > 0">****************************************</div>
             <div class="member-info">
-              <div class="item" v-if="orderInfo.isVisitor == 'N'"><span class="t">会员名称：</span>{{ orderInfo.userInfo.name }}</div>
-              <div class="item" v-if="orderInfo.isVisitor == 'N'"><span class="t">会员号码：</span>{{ orderInfo.userInfo.userNo ? orderInfo.userInfo.userNo : '-' }}</div>
+              <div class="item" v-if="orderInfo.isVisitor == 'N' && orderInfo.userInfo"><span class="t">会员名称：</span>{{ orderInfo.userInfo.name }}</div>
+              <div class="item" v-if="orderInfo.isVisitor == 'N' && orderInfo.userInfo"><span class="t">会员号码：</span>{{ orderInfo.userInfo.userNo ? orderInfo.userInfo.userNo : '-' }}</div>
               <div class="item" v-if="orderInfo.isVisitor == 'Y'"><span class="t">会员信息：</span>无</div>
             </div>
             <div v-if="orderInfo.orderMode == 'express' && orderInfo.address">****************************************</div>
@@ -29,8 +29,8 @@
             <div class="total-info">
               <div class="item">订单类型：{{ orderInfo.typeName }}</div>
               <div class="item">订单时间：{{ orderInfo.createTime }}</div>
-              <div class="item">优惠金额：<span class="discount">￥{{ orderInfo.discount.toFixed(2) }}</span></div>
-              <div class="item">应收金额：<span class="amount">￥{{ orderInfo.payAmount.toFixed(2) }}</span></div>
+              <div class="item">优惠金额：<span class="discount">￥{{ Number(orderInfo.discount || 0).toFixed(2) }}</span></div>
+              <div class="item">应收金额：<span class="amount">￥{{ Number(orderInfo.payAmount || 0).toFixed(2) }}</span></div>
             </div>
         </div>
         <div slot="footer" class="dialog-footer">
@@ -48,11 +48,11 @@ export default {
       },
       orderInfo: {
         type:[Object],
-        default:()=>{}
+        default:()=>({})
       },
       storeInfo: {
         type:[Object],
-        default:()=>{}
+        default:()=>({})
       }
     },
     data(){

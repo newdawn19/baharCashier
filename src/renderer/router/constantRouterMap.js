@@ -35,9 +35,33 @@ export default [
     children: [
       {
         path: 'index',
-        name: '收银',
+        name: 'CashierIndex',
         component: () => import('@/views/cashier/index'),
-        meta: { title: '收银', icon: 'table' }
+        meta: { title: '收银主页', icon: 'cashier' }
+      },
+      {
+        path: 'order',
+        name: 'CashierOrder',
+        component: () => import('@/views/cashier/order/index'),
+        meta: { title: '订单管理', icon: 'order' }
+      },
+      {
+        path: 'member',
+        name: 'CashierMember',
+        component: () => import('@/views/cashier/member/index'),
+        meta: { title: '会员管理', icon: 'member' }
+      },
+      {
+        path: 'recharge',
+        name: 'CashierRecharge',
+        component: () => import('@/views/cashier/recharge/index'),
+        meta: { title: '会员充值', icon: 'recharge' }
+      },
+      {
+        path: 'coupon',
+        name: 'CashierCoupon',
+        component: () => import('@/views/cashier/coupon/index'),
+        meta: { title: '卡券核销', icon: 'coupon' }
       }
     ]
   }

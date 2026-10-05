@@ -70,6 +70,7 @@
       </el-form-item>
     </el-form>
 
+    <div class="table-wrap">
     <el-table ref="tables" v-loading="loading" :data="list" border style="width: 100%;" fit height="100%" @selection-change="handleSelectionChange" :default-sort="defaultSort" @sort-change="handleSortChange">
       <el-table-column label="会员ID" prop="id" width="80"/>
       <el-table-column label="头像" align="center" width="80">
@@ -92,26 +93,30 @@
       </el-table-column>
       <el-table-column label="余额" align="center" prop="balance">
         <template slot-scope="scope">
-          <div><span style="color:red;">￥{{ scope.row.balance ? scope.row.balance.toFixed(2) : '0.00' }}</span></div>
-          <el-button
-            class="main-button-mini"
-            type="primary"
-            size="mini"
-            @click="handleBalance(scope.row.id)"
-            v-hasPermi="['balance:modify']"
-          >充值</el-button>
+          <div class="inline-operation">
+            <span class="balance-value">￥{{ Number(scope.row.balance || 0).toFixed(2) }}</span>
+            <el-button
+              class="business-mini-button"
+              type="primary"
+              size="mini"
+              @click="handleBalance(scope.row)"
+              v-hasPermi="['balance:modify']"
+            >充值</el-button>
+          </div>
         </template>
       </el-table-column>
       <el-table-column label="积分" align="center" prop="point">
         <template slot-scope="scope">
-          <div><span>{{ scope.row.point ? scope.row.point : '0.00' }}</span></div>
-          <el-button
-            class="main-button-mini"
-            type="primary"
-            size="mini"
-            @click="handlePoint(scope.row.id)"
-            v-hasPermi="['point:modify']"
-          >变更</el-button>
+          <div class="inline-operation">
+            <span>{{ scope.row.point || 0 }}</span>
+            <el-button
+              class="business-mini-button"
+              type="primary"
+              size="mini"
+              @click="handlePoint(scope.row.id)"
+              v-hasPermi="['point:modify']"
+            >变更</el-button>
+          </div>
         </template>
       </el-table-column>
       <el-table-column label="注册时间" align="center" width="160" prop="createTime">
@@ -135,27 +140,33 @@
           ></el-switch>
         </template>
       </el-table-column>
-      <el-table-column label="操作" align="center" width="138" fixed='right'>
+      <el-table-column label="操作" align="center" width="180" fixed='right'>
         <template slot-scope="scope">
           <el-button
             size="mini"
             type="text"
-            icon="el-icon-edit"
-            class="main-text"
+            class="main-text row-action-button"
             v-hasPermi="['member:add']"
             @click="handleUpdate(scope.row)"
           >修改</el-button>
           <el-button
             size="mini"
             type="text"
-            icon="el-icon-delete"
-            class="main-text"
+            class="main-text row-action-button"
             v-hasPermi="['member:add']"
             @click="handleDelete(scope.row)"
           >删除</el-button>
+          <el-button
+            size="mini"
+            type="text"
+            class="main-text row-action-button"
+            v-hasPermi="['member:add']"
+            @click="handleUpgrade(scope.row)"
+          >升级</el-button>
         </template>
       </el-table-column>
     </el-table>
+    </div>
 
     <pagination
       v-show="total>0"
@@ -294,7 +305,16 @@
     </el-dialog>
 
     <!-- 余额充值对话框 -->
-    <balanceRecharge :showDialog="openBalance" :userId="userId" @closeDialog="closeDialog" @close="closeDialog" append-to-body/>
+    <balanceRecharge
+      :showDialog="openBalance"
+      :userId="userId"
+      :member-no="currentUser.userNo"
+      :balance="currentUser.balance"
+      @closeDialog="closeDialog"
+      @close="closeDialog"
+      @success="getList"
+      append-to-body
+    />
 
     <!-- 积分充值对话框 -->
     <pointRecharge :showDialog="openPoint" :userId="userId" @closeDialog="closeDialog" @close="closeDialog" append-to-body/>
@@ -334,6 +354,8 @@ export default {
       userId: '',
       // 是否弹层充值
       openBalance: false,
+      // 当前操作行（充值弹窗要展示会员号与可用余额）
+      currentUser: {},
       // 是否弹层积分
       openPoint: false,
       // 日期范围
@@ -423,10 +445,11 @@ export default {
       this.queryParams.isAsc = column.order;
       this.getList();
     },
-    // 余额充值操作
-    handleBalance(userId) {
+    // 余额充值操作（传整行，充值弹窗要展示会员号与可用余额）
+    handleBalance(row) {
+       this.currentUser = row || {};
        this.openBalance = true;
-       this.userId = userId.toString();
+       this.userId = (row && row.id ? row.id : '').toString();
     },
     // 积分变更操作
     handlePoint(userId) {
@@ -509,6 +532,17 @@ export default {
          // empty
       });
     },
+    // 升级会员：复用会员编辑表单，直接调整会员等级
+    handleUpgrade(row) {
+      this.reset();
+      getMemberInfo(row.id).then(response => {
+        this.form = response.data.memberInfo;
+        this.open = true;
+        this.title = "会员升级";
+      }).catch(() => {
+         // empty
+      });
+    },
     // 删除按钮操作
     handleDelete(row) {
       const name = row.name
@@ -538,13 +572,48 @@ export default {
 ::v-deep .el-table--scrollable-y .el-table__body-wrapper {
   overflow: overlay !important;
 }
+.inline-operation {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  white-space: nowrap;
+}
+.balance-value {
+  color: #ff5b57;
+}
+.business-mini-button {
+  box-sizing: border-box;
+  width: 55px;
+  height: 27px;
+  padding: 0;
+  border-color: #00acac;
+  background: #00acac;
+  font-size: 12px;
+}
+.business-mini-button:hover,
+.business-mini-button:focus {
+  border-color: #077171;
+  background: #077171;
+}
+.row-action-button {
+  padding: 7px 0;
+  font-size: 12px;
+  color: #00acac;
+}
+::v-deep .el-switch {
+  width: 40px;
+  height: 20px;
+}
 .member-container {
-  position: absolute;
-  top: 40px;
-  left: 165px;
-  right: 10px;
+  /* 同 order-container：原为独立 Admin 页写的 absolute + left:165px + height:70%，
+     嵌入收银台 el-tabs 后高度塌成 0，改为静态流式布局 + 不依赖祖先的确定高度。 */
+  position: static;
   margin: 10px;
-  height: 70%;
+  height: calc(100vh - 235px);
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
   .search-form {
     border: solid 1px #cccccc;
     margin-top: 0px;
@@ -552,20 +621,22 @@ export default {
     background: #f5f5f5;
     margin-bottom: 5px;
     border-radius: 3px;
+    flex: 0 0 auto;
+  }
+  .table-wrap {
+    flex: 1 1 auto;
+    min-height: 0;
   }
   .pagination {
-    position: fixed;
-    bottom: 10px;
+    position: static;
+    flex: 0 0 auto;
     height: 50px;
-    min-width: 780px;
     line-height: 50px;
-    right: 160px;
     margin-top: 10px;
     display: block;
     background: #6c757d;
     color: #ffffff;
     border-radius: 5px;
-    z-index: 99999;
   }
 }
 </style>

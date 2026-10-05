@@ -27,7 +27,7 @@
 
         <template v-for="child in item.children" v-if="!child.hidden">
           <sidebar-item :is-nest="true" class="nest-menu" v-if="child.children && child.children.length > 0" :item="child"
-            :key="child.path" :base-path="resolvePath(child.path)"></sidebar-item>
+            :key="child.path" :base-path="resolvePath(child.path)" :collapse="collapse"></sidebar-item>
 
           <router-link v-else :to="resolvePath(child.path)" :key="child.name">
             <el-menu-item :index="resolvePath(child.path)">

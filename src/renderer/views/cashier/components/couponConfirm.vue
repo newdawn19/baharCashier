@@ -178,11 +178,13 @@ export default {
 };
 </script>
 <style scoped>
+/*
+ * 原来是 position:absolute + left:165px（旧 256px 侧栏时代的偏移，现已收窄到 160px），
+ * 且绝对定位在路由页里会撑不起父容器。改为静态布局由父级 route-view 撑开。
+ */
 .coupon-container {
-  position: absolute;
-  top: 30px;
-  left: 165px;
-  right: 10px;
+  position: static;
+  margin: 10px;
 }
 .main-panel {
   margin-top: 20px;

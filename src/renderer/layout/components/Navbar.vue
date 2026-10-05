@@ -90,24 +90,27 @@ const logout = () => {
 <style rel="stylesheet/scss" lang="scss" scoped>
 .navbar-header-fixed {
   transition: width 0.28s;
-  width: calc(100% - 256px);
+  // 侧栏由 256px 收窄到 160px
+  width: calc(100% - 160px);
   display: flex;
   align-items: center;
   position: fixed;
   right: 0;
   z-index: 1002;
-  height: 62px;
+  // 62px -> 44px：收银台垂直空间寸土寸金。
+  // 注意内部元素必须同步压缩，否则会撑破（见下方 hamburger/logo/padding）。
+  height: 44px;
 
   .hamburger-container {
-    line-height: 58px;
-    height: 50px;
+    line-height: 32px;
+    height: 32px;
     float: left;
     padding: 0 10px;
   }
 
   .logo {
-    width: 199px;
-    height: 62px;
+    width: 120px;
+    height: 32px;
   }
 
   .top-right {
@@ -116,7 +119,7 @@ const logout = () => {
     height: 100%;
     background-color: #ffffff;
     justify-content: space-between;
-    padding: 0 19px;
+    padding: 0 12px;
 
     .hb-bd {
       display: flex;
@@ -125,9 +128,9 @@ const logout = () => {
     }
 
     .avatar {
-      width: 30px;
-      height: 30px;
-      margin-right: 10px;
+      width: 26px;
+      height: 26px;
+      margin-right: 8px;
 
       ::v-deep img {
         width: 100%;

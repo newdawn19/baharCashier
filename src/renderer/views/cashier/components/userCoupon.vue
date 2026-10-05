@@ -75,11 +75,14 @@
         </el-select>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" class="main-button-middle" icon="el-icon-search" size="mini" @click="handleQuery(false)">搜索</el-button>
+        <!-- 与订单页、会员页统一叫「查询」（竞品这里叫「搜索」，是它的命名不一致） -->
+        <el-button type="primary" class="main-button-middle" icon="el-icon-search" size="mini" @click="handleQuery(false)">查询</el-button>
         <el-button icon="el-icon-refresh" class="main-button-middle main-button-reset" size="mini" @click="resetQuery">重置</el-button>
       </el-form-item>
     </el-form>
 
+    <!-- flex 中间区：撑满剩余高度并内部滚动 -->
+    <div class="table-wrap">
     <el-table ref="tables" v-loading="loading" :data="list" border style="width: 100%;" fit height="100%" @selection-change="handleSelectionChange" :default-sort="defaultSort" @sort-change="handleSortChange">
       <el-table-column label="ID" prop="id" width="100"/>
       <el-table-column label="核销码" prop="code" width="150"/>
@@ -181,6 +184,7 @@
         </template>
       </el-table-column>
     </el-table>
+    </div>
 
     <pagination
       v-show="total>0"
@@ -381,13 +385,23 @@ export default {
 ::v-deep .el-table--scrollable-y .el-table__body-wrapper {
   overflow: overlay !important;
 }
+/*
+ * 原写法 position:absolute + top:50px + left:165px + height:68% 是旧 Admin 独立页时代的遗留：
+ * 放进 el-tabs / 路由页后，绝对定位撑不起父容器 → 百分比高度失去确定祖先 → 高度塌成 0
+ * → 内容被 overflow:hidden 整块裁掉（症状就是"接口有数据但界面空白"）。
+ * orderList.vue / memberList.vue 已踩过同一个坑，这里改成同一套 flex 写法。
+ * 另外 left:165px 是 256px 侧栏时代的偏移，侧栏已收窄到 160px，更不能再写死。
+ */
 .userCoupon-container {
-  position: absolute;
-  top: 50px;
-  left: 165px;
-  right: 10px;
-  height: 68%;
+  position: static;
+  margin: 10px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+
   .search-form {
+    flex: 0 0 auto;
     border: solid 1px #cccccc;
     margin-top: 0px;
     padding: 15px 10px 0px 10px;
@@ -395,19 +409,22 @@ export default {
     margin-bottom: 5px;
     border-radius: 3px;
   }
+
+  .table-wrap {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow: hidden;
+  }
+
   .pagination {
-    position: fixed;
-    bottom: 10px;
+    flex: 0 0 auto;
     height: 50px;
-    min-width: 800px;
     line-height: 50px;
-    right: 170px;
     margin-top: 10px;
     display: block;
     background: #6c757d;
     color: #ffffff;
     border-radius: 5px;
-    z-index: 99999;
   }
 }
 </style>

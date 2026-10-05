@@ -4,7 +4,8 @@
   .main-container {
     min-height: 100%;
     transition: margin-left .28s;
-    margin-left: 256px;
+    // 收银台侧栏由 256px 收窄到 160px（对标竞品图标导航，给主内容区多让 96px）
+    margin-left: 160px;
   }
 
   // 侧边栏
@@ -12,16 +13,19 @@
     .horizontal-collapse-transition {
       transition: 0s width ease-in-out, 0s padding-left ease-in-out, 0s padding-right ease-in-out;
     }
-    
+
     transition: width .28s;
-    width: 256px !important;
+    width: 160px !important;
     height: 100%;
     position: fixed;
     font-size: 0px;
     bottom: 0;
     left: 0;
     z-index: 1001;
-    overflow: hidden;
+    // 矮屏时菜单区靠侧栏自身滚动（对标竞品 .left-side 的 overflow）
+    overflow: hidden auto;
+    background: #00ACAC;
+    color: #FFFFFF;
 
     a {
       display: inline-block;
@@ -35,6 +39,117 @@
     .el-menu {
       border: none;
       width: 100% !important;
+      background: transparent;
+    }
+
+    // ---------- 品牌区（顶部 90px，对标竞品 .logo 的四行信息） ----------
+    .sidebar-brand {
+      position: relative;
+      height: 90px;
+      padding: 12px;
+      box-sizing: border-box;
+      color: #FFFFFF;
+      overflow: hidden;
+
+      .brand-toggle {
+        position: absolute;
+        top: 12px;
+        right: 12px;
+        font-size: 16px;
+        line-height: 20px;
+        cursor: pointer;
+        opacity: .85;
+
+        &:hover {
+          opacity: 1;
+        }
+      }
+
+      .brand-title {
+        font-size: 16px;
+        font-weight: 600;
+        line-height: 24px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .brand-store {
+        margin-top: 4px;
+        font-size: 12px;
+        line-height: 16px;
+        opacity: .85;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .brand-account {
+        margin-top: 2px;
+        font-size: 12px;
+        line-height: 16px;
+        opacity: .85;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    }
+
+    // ---------- 图标导航（对标竞品 li.nav-item > a.nav-link） ----------
+    .sidebar-nav {
+      list-style: none;
+      margin: 0;
+      padding: 0 14px;
+
+      .nav-item {
+        margin-top: 20px;
+      }
+
+      .nav-link {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        width: 120px;
+        height: 89px;
+        border-radius: 5px;
+        background: #F5F5F5;
+        color: #666666;
+        font-size: 14px;
+        cursor: pointer;
+        // 未选中：2px 白色左竖条
+        border-left: 2px solid #FFFFFF;
+        box-sizing: border-box;
+        transition: background .2s, color .2s, box-shadow .2s;
+
+        .nav-icon {
+          width: 50px;
+          height: 50px;
+          margin-bottom: 4px;
+
+          .svg-icon,
+          svg {
+            width: 50px;
+            height: 50px;
+            margin-left: 0;
+            fill: currentColor;
+          }
+        }
+
+        &:hover {
+          background: #FFFFFF;
+          color: #00ACAC;
+        }
+      }
+
+      // 选中态：竞品只靠 4px 红竖条，视觉过弱；这里额外叠白底 + 阴影 + 主题色文字
+      .nav-link.is-active {
+        background: #FFFFFF;
+        color: #00ACAC;
+        font-weight: 600;
+        border-left: 4px solid #FF5B57;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, .12);
+      }
     }
   }
 
@@ -50,6 +165,48 @@
 
     .main-container {
       margin-left: 60px;
+    }
+
+    // 收起态：只留图标，隐藏文字与品牌区次要信息
+    .sidebar-container {
+      .sidebar-brand {
+        padding: 12px 6px;
+
+        .brand-title,
+        .brand-store,
+        .brand-account {
+          display: none;
+        }
+
+        .brand-toggle {
+          right: 50%;
+          transform: translateX(50%);
+        }
+      }
+
+      .sidebar-nav {
+        padding: 0 5px;
+
+        .nav-link {
+          width: 50px;
+          height: 60px;
+          font-size: 0;
+          border-left-width: 2px;
+
+          .nav-icon {
+
+            .svg-icon,
+            svg {
+              width: 34px;
+              height: 34px;
+            }
+          }
+        }
+
+        .nav-link.is-active {
+          border-left-width: 4px;
+        }
+      }
     }
 
     .submenu-title-noDropdown {

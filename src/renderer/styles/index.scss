@@ -67,3 +67,76 @@ a:hover {
 .app-container {
   padding: 20px;
 }
+
+/* ------------------------------------------------------------------
+ * 收银台全局皮肤（对标竞品实测值统一）
+ * ------------------------------------------------------------------ */
+
+// 弹窗：头部整条主色 + 白标题（比 element 默认灰头层级更清晰）
+.el-dialog__header {
+  height: 44px;
+  padding: 0 20px;
+  box-sizing: border-box;
+  background: #00ACAC;
+  display: flex;
+  align-items: center;
+
+  .el-dialog__title {
+    color: #FFFFFF;
+    font-size: 14px;
+    line-height: 44px;
+  }
+
+  .el-dialog__headerbtn {
+    top: 0;
+    height: 44px;
+    display: flex;
+    align-items: center;
+
+    .el-dialog__close {
+      color: #FFFFFF;
+    }
+  }
+}
+
+.el-dialog__footer {
+  min-height: 65px;
+  box-sizing: border-box;
+
+  .dialog-footer {
+    text-align: right;
+  }
+}
+
+// 表格：表头浅灰 + 13px 粗体，正文 14px，行高抬高到接近竞品 66.67px
+.el-table {
+  th {
+    background: #F8F8F9;
+    color: #515A6E;
+    font-size: 13px;
+    font-weight: 700;
+  }
+
+  td {
+    color: #606266;
+    font-size: 14px;
+    padding: 10px 0;
+  }
+}
+
+// 筛选表单区：浅灰底，与竞品一致
+.search-form {
+  background: #F5F5F5;
+  padding: 15px 10px 0;
+}
+
+// 分页条容器
+.pagination-container {
+  background: #6C757D;
+}
+
+// 业务金额强调色统一（此前混用 #FF5B57 与 #f56c6c 两套）
+.amount-strong {
+  color: #FF5B57;
+  font-weight: 600;
+}

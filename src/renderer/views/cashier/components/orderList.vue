@@ -76,6 +76,7 @@
         <el-button icon="el-icon-refresh" class="main-button-middle main-button-reset" @click="resetQuery">重置</el-button>
       </el-form-item>
     </el-form>
+    <div class="table-wrap">
     <el-table ref="tables" v-loading="loading" :data="list" border style="width: 100%;" fit height="100%" show-overflow-tooltip @selection-change="handleSelectionChange" :default-sort="defaultSort" @sort-change="handleSortChange">
       <el-table-column label="ID" prop="id" width="80"/>
       <el-table-column label="订单号"  align="center" width="190" prop="orderSn">
@@ -193,6 +194,7 @@
         </template>
       </el-table-column>
     </el-table>
+    </div>
 
     <pagination
         class="pagination"
@@ -823,11 +825,15 @@ export default {
   overflow: overlay !important;
 }
 .order-container {
-    position: absolute;
-    top: 50px;
-    left: 165px;
-    right: 10px;
-    height: 68%;
+    /* 原为 position:absolute + top/left/right + height:68%（为独立 Admin 路由页左侧菜单留位）。
+       本组件现被嵌入收银台 el-tabs，绝对定位子元素撑不起 .el-tab-pane，
+       百分比高度也失去确定祖先而塌成 0，故改为静态流式布局并给出不依赖祖先的确定高度。 */
+    position: static;
+    margin: 10px;
+    height: calc(100vh - 235px);
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
     .search-form {
        border: solid 1px #cccccc;
        margin-top: 0px;
@@ -835,20 +841,22 @@ export default {
        background: #f5f5f5;
        margin-bottom: 5px;
        border-radius: 3px;
+       flex: 0 0 auto;
+    }
+    .table-wrap {
+      flex: 1 1 auto;
+      min-height: 0;
     }
     .pagination {
-      position: fixed;
-      bottom: 10px;
+      position: static;
+      flex: 0 0 auto;
       height: 50px;
-      min-width: 730px;
       line-height: 50px;
-      right: 150px;
       margin-top: 10px;
       display: block;
       background: #6c757d;
       color: #ffffff;
       border-radius: 5px;
-      z-index: 99999;
     }
 }
 </style>

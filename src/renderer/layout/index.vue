@@ -48,7 +48,8 @@ const classObj = computed(() => {
 
   .container-set {
     position: relative;
-    padding-top: 62px;
+    // 顶栏由 62px 压缩到 44px（收银台寸土寸金，对标竞品无顶栏的做法尽量收窄）
+    padding-top: 44px;
   }
 }
 
