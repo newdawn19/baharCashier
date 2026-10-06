@@ -19,3 +19,11 @@ build/builder-effective-config.yaml
 
 # AI Framework local control plane
 /agent_bootstrap/
+
+# 本地调研/联调工作区（qadrive）：抓的竞品 DOM 规格与截图属于第三方素材，
+# 且竞品会持续迭代，快照进库只会变成过期噪声；里面还有 webpack 构建产物
+# （renderer.js 12MB 等）和临时脚本日志，一律不入库。
+/qadrive/
+/screenshots/
+/.codebuddy/
+/.devcontainer/
