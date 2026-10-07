@@ -1,8 +1,8 @@
 {
   "name": "baharCashier",
   "version": "1.0.0",
-  "author": "延禾技术",
-  "description": "海南延禾信息技术有限公司旗下收银系统",
+  "author": "bahar",
+  "description": "bahar 收银系统",
   "license": "MIT",
   "main": "./dist/electron/main.js",
   "scripts": {

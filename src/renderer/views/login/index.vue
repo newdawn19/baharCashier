@@ -40,7 +40,7 @@
           <button type="button" class="btn" @click="handleLogin()">立即登录</button>
         </div>
         <div class="tips">
-          <span>Copyright © 2020-2024 <a target="_blank" href="https://www.bahar.cn">bahar.cn</a> 延禾技术 All Rights Reserved.</span>
+          <span>Copyright © 2020-2024 <a target="_blank" href="https://www.bahar.cn">bahar.cn</a> All Rights Reserved.</span>
         </div>
       </el-form>
     </div>
