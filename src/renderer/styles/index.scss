@@ -140,3 +140,34 @@ a:hover {
   color: #FF5B57;
   font-weight: 600;
 }
+
+/* ==================================================================
+ * bahar 统一卡片/间距工具类（与 uniapp 同名 token，px 单位）
+ * 纯追加，不改动现有布局；供页面/组件统一调用，保证两端设计语言一致
+ * ================================================================== */
+.bahar-page {
+  background-color: #f7f8fa;
+  min-height: 100vh;
+}
+.bahar-card {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+  padding: 16px;
+  margin: 16px;
+}
+.bahar-card--flat {
+  box-shadow: none;
+}
+.bahar-section-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: #303133;
+  padding: 16px 16px 8px;
+}
+.bahar-mt {
+  margin-top: 16px;
+}
+.bahar-mb {
+  margin-bottom: 16px;
+}
