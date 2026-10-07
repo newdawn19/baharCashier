@@ -1,3 +1,4 @@
+@import './variables.scss';
 //to reset element-ui default css
  .el-upload {
    input[type="file"] {
@@ -49,10 +50,10 @@
  // common dialog
 .common-dialog {
   .el-dialog {
-    border: solid 0px #00acac;
+    border: solid 0px $bahar-theme;
   }
   .el-dialog__header{
-    background: #00acac;
+    background: $bahar-theme;
     padding: 10px;
   }
   .el-dialog__headerbtn {
@@ -72,27 +73,27 @@
 }
 // main button
 .main-button {
-   background: #00acac;
+   background: $bahar-theme;
    line-height: 40px;
    padding: 0px 20px 0px 20px;
    height: 40px;
 }
 .main-button-mini {
-  background: #00acac;
+  background: $bahar-theme;
   padding: 5px 8px 5px 8px;
 }
 .main-button-middle {
-  background: #00acac;
+  background: $bahar-theme;
   padding: 8px 12px 8px 12px;
 }
 .main-button:hover {
-   background: #077171;
+   background: $bahar-theme-dark;
 }
 .main-button-mini:hover {
-  background: #077171;
+  background: $bahar-theme-dark;
 }
 .main-button-middle:hover {
-  background: #077171;
+  background: $bahar-theme-dark;
 }
 .main-button-reset {
   background: #ffffff;
@@ -111,6 +112,98 @@
 .do-button:hover {
   background: #ff5b33;
   border: solid 1px #ff5b57;
+}
+
+/* ==================================================================
+ * bahar 品牌化：把 Element UI 原生主色 #409EFF 统一覆盖为品牌青
+ * （纯 CSS 覆盖，不重编译 element theme-chalk，低风险）
+ * ================================================================== */
+
+// 1) 原生主按钮
+.el-button--primary {
+  background-color: $bahar-theme;
+  border-color: $bahar-theme;
+
+  &:hover,
+  &:focus {
+    background-color: $bahar-theme-dark;
+    border-color: $bahar-theme-dark;
+  }
+
+  &:active,
+  &.is-active {
+    background-color: $bahar-theme-dark;
+    border-color: $bahar-theme-dark;
+  }
+
+  &.is-disabled,
+  &.is-disabled:hover,
+  &.is-disabled:focus,
+  &.is-disabled:active {
+    background-color: #80d4d4;
+    border-color: $bahar-theme;
+    color: #ffffff;
+  }
+}
+
+// 2) 单选框选中态
+.el-radio__input.is-checked {
+  .el-radio__inner {
+    background-color: $bahar-theme;
+    border-color: $bahar-theme;
+  }
+}
+.el-radio__input.is-checked + .el-radio__label {
+  color: $bahar-theme;
+}
+
+// 3) 多选框选中态
+.el-checkbox__input.is-checked {
+  .el-checkbox__inner {
+    background-color: $bahar-theme;
+    border-color: $bahar-theme;
+  }
+}
+.el-checkbox__input.is-checked + .el-checkbox__label {
+  color: $bahar-theme;
+}
+
+// 4) 开关选中态
+.el-switch.is-checked {
+  .el-switch__core {
+    background-color: $bahar-theme;
+    border-color: $bahar-theme;
+  }
+}
+
+// 5) tabs 底部活动条（.el-tabs__item.is-active 颜色已在 bahar.scss 覆盖）
+.el-tabs__active-bar {
+  background-color: $bahar-theme;
+}
+
+// 6) 文字链接 primary
+.el-link.el-link--primary {
+  color: $bahar-theme;
+
+  &:hover {
+    color: $bahar-theme-dark;
+  }
+}
+
+// 7) 下拉/select 选中项
+.el-select-dropdown__item.selected {
+  color: $bahar-theme;
+  font-weight: 700;
+}
+.el-dropdown-menu__item.is-active {
+  color: $bahar-theme;
+  background-color: rgba(0, 172, 172, 0.08);
+}
+
+// 8) 输入框/文本域聚焦边框（避免与主题青冲突的默认蓝）
+.el-input__inner:focus,
+.el-textarea__inner:focus {
+  border-color: $bahar-theme;
 }
 
 

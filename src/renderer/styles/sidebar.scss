@@ -24,7 +24,7 @@
     z-index: 1001;
     // 矮屏时菜单区靠侧栏自身滚动（对标竞品 .left-side 的 overflow）
     overflow: hidden auto;
-    background: #00ACAC;
+    background: $bahar-theme;
     color: #FFFFFF;
 
     a {
@@ -138,14 +138,14 @@
 
         &:hover {
           background: #FFFFFF;
-          color: #00ACAC;
+          color: $bahar-theme;
         }
       }
 
       // 选中态：竞品只靠 4px 红竖条，视觉过弱；这里额外叠白底 + 阴影 + 主题色文字
       .nav-link.is-active {
         background: #FFFFFF;
-        color: #00ACAC;
+        color: $bahar-theme;
         font-weight: 600;
         border-left: 4px solid #FF5B57;
         box-shadow: 0 2px 8px rgba(0, 0, 0, .12);

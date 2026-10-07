@@ -73,11 +73,11 @@ a:hover {
  * ------------------------------------------------------------------ */
 
 // 弹窗：头部整条主色 + 白标题（比 element 默认灰头层级更清晰）
-.el-dialog__header {
+  .el-dialog__header {
   height: 44px;
   padding: 0 20px;
   box-sizing: border-box;
-  background: #00ACAC;
+  background: $bahar-theme;
   display: flex;
   align-items: center;
 

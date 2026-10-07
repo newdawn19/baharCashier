@@ -2,3 +2,7 @@
 $menuBg:#ffffff;
 $subMenuBg:#1f2d3d;
 $menuHover:#001528;
+
+// bahar 品牌青色 token（统一收口，避免 #00acac / #077171 散落）
+$bahar-theme: #00acac;        // 品牌主青
+$bahar-theme-dark: #077171;   // hover/active 深青（bahar.scss 已在用）
